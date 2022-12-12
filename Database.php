@@ -66,16 +66,16 @@ class Database {
         $this->sql = "select * from $table ";
         $result = mysqli_query($this->connect, $this->sql);
         $amountOfUsers = mysqli_num_rows($result);
-
+        $amountOfUsers += 1;
         //maakt rang aan voor de gebruiker
         $this->sql =
-        "INSERT INTO ranglijst (rang) VALUES ($amountOfUsers + 1)";
+        "INSERT INTO ranglijst (rang) VALUES ($amountOfUsers)";
         mysqli_query($this->connect, $this->sql);
 
         //$amount is placeholder
         $this->sql =
             "INSERT INTO " . $table . " (rol, gebruikersnaam, wachtwoord, stappen, punten, rang, nieuws) VALUES 
-            ('[ROLE_USER]','" . $username . "','" . $password . "', 0, 0,'". $amountOfUsers ."', 1)";
+            ('[ROLE_USER]','" . $username . "','" . $password . "', 0, 0, $amountOfUsers, 1)";
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
         } else return false;
