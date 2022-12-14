@@ -10,7 +10,7 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['repea
         if($db->dbConnect()) {
             if($db->signUp("gebruiker",$username, $password)) {
                 echo "Success!";
-            }else echo "gebruikersnaam wordt al gebruikt"; //kan ook DB fout zijn (niet waarschijnlijk)
+            }else echo "gebruikersnaam wordt al gebruikt"; //Kan ook DB fout zijn (niet waarschijnlijk)
         }else echo "Geen connectie met database...";
     } else echo "wachtwoord is niet hetzelfde!";
 } else echo "Vul alles in aub";
