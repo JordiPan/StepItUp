@@ -12,5 +12,5 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['repea
                 echo "Success!";
             }else echo "gebruikersnaam wordt al gebruikt"; //kan ook DB fout zijn (niet waarschijnlijk)
         }else echo "Geen connectie met database...";
-    } else echo "wachtwoord is niet hetzelfde!";
+    } else echo "wachtwoord is niet hetzelfde!";  //test123
 } else echo "Vul alles in aub";
