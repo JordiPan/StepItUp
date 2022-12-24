@@ -52,7 +52,7 @@ class Database {
     function signUp($table, $username, $email, $password)
     {
         //check of al gebruikersnaam bestaat in DB
-        $this->sql = "select * from $table where gebruikersnaam = '$username'";
+        $this->sql = "select * from $table where gebruikersnaam = '$username' or where ";
         $result = mysqli_query($this->connect, $this->sql);
         if (mysqli_num_rows($result) >= 1) {
             return false;
@@ -71,4 +71,12 @@ class Database {
         } else return false;
     }
 
+    function showUsers() {
+        $this->sql = "select * from gebruiker";
+        $result = mysqli_query($this->connect, $this->sql);
+        $rows = mysqli_fetch_assoc($result);
+        foreach($rows as $row) {
+            echo $row;
+        }
+    }
 }
