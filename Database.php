@@ -63,7 +63,6 @@ class Database {
         $password = $this->prepareData($password);
         $password = password_hash($password, PASSWORD_DEFAULT);
 
-        //$amount is placeholder
         $this->sql =
             "INSERT INTO " . $table . " (rol, gebruikersnaam, email, wachtwoord, stappen, punten, nieuws) VALUES 
             ('[ROLE_USER]','" . $username . "','" . $email . "','" . $password . "', 0, 0, 1)";
