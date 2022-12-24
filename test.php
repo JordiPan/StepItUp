@@ -3,7 +3,7 @@ require "Database.php";
 $db = new Database();
 
     if($db->dbConnect()) {
-        if($db->logIn("gebruiker",$username, $password)) {
+        if($db->showUsers()) {
             echo "Welkom!";
-        }else echo "Helaas is de combinatie onjuist";
+        }else echo "Geen idee wat fout is gegaan";
     }else echo "Geen connectie met database...";
