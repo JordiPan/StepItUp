@@ -49,36 +49,33 @@ class Database {
         return $login;
     }
 
-    function signUp($table, $username, $password)
+    function signUp($table, $username, $email, $password)
     {
         //check of al gebruikersnaam bestaat in DB
-        $this->sql = "select * from $table where gebruikersnaam = '$username'";
+        $this->sql = "select * from $table where gebruikersnaam = '$username' or email = '$email'";
         $result = mysqli_query($this->connect, $this->sql);
         if (mysqli_num_rows($result) >= 1) {
             return false;
         }
 
         $username = $this->prepareData($username);
+        $email = $this->prepareData($email);
         $password = $this->prepareData($password);
         $password = password_hash($password, PASSWORD_DEFAULT);
 
-        //checkt hoeveelheid gebruikers om als rang mee te geven
-        $this->sql = "select * from $table ";
-        $result = mysqli_query($this->connect, $this->sql);
-        $amountOfUsers = mysqli_num_rows($result);
-        $amountOfUsers += 1;
-        //maakt rang aan voor de gebruiker
         $this->sql =
-        "INSERT INTO ranglijst (rang) VALUES ($amountOfUsers)";
-        mysqli_query($this->connect, $this->sql);
-
-        //$amount is placeholder
-        $this->sql =
-            "INSERT INTO " . $table . " (rol, gebruikersnaam, wachtwoord, stappen, punten, rang, nieuws) VALUES 
-            ('[ROLE_USER]','" . $username . "','" . $password . "', 0, 0, $amountOfUsers, 1)";
+            "INSERT INTO " . $table . " (rol, gebruikersnaam, email, wachtwoord, stappen, punten, nieuws) VALUES 
+            ('[ROLE_USER]','" . $username . "','" . $email . "','" . $password . "', 0, 0, 1)";
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
         } else return false;
     }
 
+    function showUsers() {
+        $this->sql = "select * from gebruiker";
+        $result = mysqli_query($this->connect, $this->sql);
+        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        echo json_encode($rows);
+        return true;
+    }
 }

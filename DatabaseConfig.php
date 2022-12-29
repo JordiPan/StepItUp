@@ -11,6 +11,6 @@ class DatabaseConfig {
         $this->serverName = 'localhost';
         $this->username = 'root';
         $this->password = '';
-        $this->databaseName = 'sof';
+        $this->databaseName = 'stepitup';
     }
 }
