@@ -43,7 +43,7 @@ class Database {
             $dbusername = $row["gebruikersnaam"];
             $dbpassword = $row["wachtwoord"]; 
             if ($dbusername == $username && password_verify($password, $dbpassword)) {
-                $login = true;
+                $login = $row;
             }
         }
         return $login;
