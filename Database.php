@@ -1,7 +1,8 @@
 <?php
 require "DatabaseConfig.php";
 
-class Database {
+class Database
+{
     public $connect;
     public $data;
     private $sql;
@@ -10,7 +11,8 @@ class Database {
     protected $password;
     protected $databaseName;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->connect = null;
         $this->data = null;
         $this->sql = null;
@@ -21,7 +23,8 @@ class Database {
         $this->databaseName = $dbc->databaseName;
     }
     //database klaar maken
-    function dbConnect() {
+    function dbConnect()
+    {
         $this->connect = mysqli_connect($this->serverName, $this->username, $this->password, $this->databaseName);
         return $this->connect;
     }
@@ -41,7 +44,7 @@ class Database {
         $row = mysqli_fetch_assoc($result);
         if (mysqli_num_rows($result) != 0) {
             $dbusername = $row["gebruikersnaam"];
-            $dbpassword = $row["wachtwoord"]; 
+            $dbpassword = $row["wachtwoord"];
             if ($dbusername == $username && password_verify($password, $dbpassword)) {
                 $login = $row;
             }
@@ -71,11 +74,36 @@ class Database {
         } else return false;
     }
 
-    function showUsers() {
+    function showUsers()
+    {
         $this->sql = "select * from gebruiker";
         $result = mysqli_query($this->connect, $this->sql);
         $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
         echo json_encode($rows);
         return true;
+    }
+
+    function getUserInfo($table, $userId)
+    {
+        $result = false;
+        $userId = $this->prepareData($userId);
+        $this->sql = "select * from " . $table . " where gebruiker_ID = '" . $userId . "'";
+        $result = mysqli_query($this->connect, $this->sql);
+        $row = mysqli_fetch_assoc($result);
+        if (mysqli_num_rows($result) != 0) {
+            $result = $row;
+            return $result;
+        }
+    }
+    function getRankingInfo($table)
+    {
+        $result = false;
+        $this->sql = "select gebruikersnaam, stappen from $table order by stappen DESC";
+        $result = mysqli_query($this->connect, $this->sql);
+        $rows = mysqli_fetch_all($result);
+        if (mysqli_num_rows($result) != 0) {
+            $result = $rows;
+        }
+        return $result;
     }
 }
