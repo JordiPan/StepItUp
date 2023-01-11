@@ -116,4 +116,15 @@ class Database
         }
         return $result;
     }
+    function getAllProducts($table)
+    {
+        $result = false;
+        $this->sql = "select * from $table order by naam DESC";
+        $result = mysqli_query($this->connect, $this->sql);
+        $rows = mysqli_fetch_all($result);
+        if (mysqli_num_rows($result) != 0) {
+            $result = $rows;
+        }
+        return $result;
+    }
 }
