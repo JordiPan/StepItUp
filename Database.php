@@ -127,4 +127,26 @@ class Database
         }
         return $result;
     }
+
+    function checkout($userId, $cartArray, $newPointBalance)
+    {
+        //create payment things
+        
+        $this->sql = "insert into aankoop (aankoop_ID, datum, tijdstip, gebruiker) VALUES (NULL, '". date("Y-m-d") ."', '". date("H:i:s") ."', $userId)";
+        mysqli_query($this->connect, $this->sql);
+        $createdAankoopRowId = mysqli_insert_id($this->connect);
+        
+        foreach($cartArray as $product) {
+            $productId = $product["id"];
+            $productAmount = $product["amount"];
+
+            $this->sql = "insert into transactie (product, aankoop, aantal) VALUES ($productId, $createdAankoopRowId, $productAmount)";
+            mysqli_query($this->connect, $this->sql);
+        }
+        //user update points balance
+        $this->sql = "update gebruiker set punten = $newPointBalance where gebruiker_ID = $userId";
+        mysqli_query($this->connect, $this->sql);
+
+        return true;
+    }
 }
