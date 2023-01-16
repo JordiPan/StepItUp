@@ -85,47 +85,47 @@ class Database
 
     function getUserInfo($table, $userId)
     {
-        $result = false;
+        $outcome = false;
         $userId = $this->prepareData($userId);
         $this->sql = "select * from " . $table . " where gebruiker_ID = '" . $userId . "'";
         $result = mysqli_query($this->connect, $this->sql);
         $row = mysqli_fetch_assoc($result);
         if (mysqli_num_rows($result) != 0) {
-            $result = $row;
-            return $result;
+            $outcome = $row;
+            return $outcome;
         }
     }
     function getRankingInfo($table)
     {
-        $result = false;
+        $outcome = false;
         $this->sql = "select gebruikersnaam, stappen from $table order by stappen DESC";
         $result = mysqli_query($this->connect, $this->sql);
         $rows = mysqli_fetch_all($result);
         if (mysqli_num_rows($result) != 0) {
-            $result = $rows;
+            $outcome = $rows;
         }
-        return $result;
+        return $outcome;
     }
     function getNews($table) {
-        $result = false;
+        $outcome = false;
         $this->sql = "select * from $table order by datum DESC";
         $result = mysqli_query($this->connect, $this->sql);
         $rows = mysqli_fetch_all($result);
         if (mysqli_num_rows($result) != 0) {
-            $result = $rows;
+            $outcome = $rows;
         }
-        return $result;
+        return $outcome;
     }
     function getAllProducts($table)
     {
-        $result = false;
+        $outcome = false;
         $this->sql = "select * from $table order by naam DESC";
         $result = mysqli_query($this->connect, $this->sql);
         $rows = mysqli_fetch_all($result);
         if (mysqli_num_rows($result) != 0) {
-            $result = $rows;
+            $outcome = $rows;
         }
-        return $result;
+        return $outcome;
     }
 
     function checkout($userId, $cartArray, $newPointBalance)
@@ -148,5 +148,25 @@ class Database
         mysqli_query($this->connect, $this->sql);
 
         return true;
+    }
+
+    function getPurchases($userId)
+    {
+        //create payment things
+        $outcome = false;
+        $this->sql = "
+        select a.aankoop_ID, p.naam, t.aantal, a.datum from transactie t 
+        join aankoop a on t.aankoop = a.aankoop_ID 
+        join gebruiker g on a.gebruiker = g.gebruiker_ID
+        join product p on t.product = p.product_id 
+        where g.gebruiker_ID = $userId
+        order by datum desc, aankoop_ID desc
+        ";
+        $result = mysqli_query($this->connect, $this->sql);
+        $rows = mysqli_fetch_all($result);
+        if (mysqli_num_rows($result) != 0) {
+            $outcome = $rows;
+        } 
+        return $outcome;
     }
 }
